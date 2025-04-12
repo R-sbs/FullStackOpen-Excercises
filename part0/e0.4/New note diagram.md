@@ -1,5 +1,4 @@
 # Sequence Diagram for new note addtion
- ### server address: https://studies.cs.helsinki.fi
 
 ```mermaid
 sequenceDiagram
