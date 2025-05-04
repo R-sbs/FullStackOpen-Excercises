@@ -1,8 +1,7 @@
 import express, { json } from "express";
 import morgan from "morgan";
 
-
-let persons =  [
+let persons = [
   {
     id: "1",
     name: "Arto Hellas",
@@ -27,19 +26,22 @@ let persons =  [
 
 const app = express();
 
-
+app.use(express.static('dist'));
 app.use(json());
 
 //  morgan is a logging library to use with nodeJS Servers, mainly used for logging important information(tokens( in-built or custom)) into the console.
-//  For example : 1. Install morgan 2. pass morgan function as middleware. this function takes predefined arguments like 'dev', 'combined' etc. 
+//  How this works : 1. Install morgan 2. pass morgan function as middleware. this function takes predefined arguments like 'dev', 'combined' etc.
 //  3. Other than predefined arguments, this function can take tokens, which also can be in-built or custom
 //  4. Here One wants to log the request info like method, endpoint, status, response-time, request body into the console. Each piece of info is considered as tokens.
 //  5. Each token used here is built except body token, which is custom.
- 
 
-morgan.token('body', (req) => JSON.stringify(req.body));
+morgan.token("body", (req) => JSON.stringify(req.body));
 
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms | body: :body'))
+app.use(
+  morgan(
+    ":method :url :status :res[content-length] - :response-time ms | body: :body"
+  )
+);
 
 app.get("/api/health", (req, res) => {
   res.send("<p>Healthy</p>");
@@ -97,13 +99,14 @@ app.post("/api/persons", (req, res) => {
   const newPerson = { id, name, number };
   // console.log(newPerson)
 
-persons = persons.concat(newPerson);
-console.log(persons)
+  persons = persons.concat(newPerson);
+  console.log(persons);
 
   return res
     .status(201)
     .json({ message: `${newPerson.name} is successfully created` });
 });
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
+
 app.listen(PORT, () => console.log(`Server is Running on port ${PORT}`));
