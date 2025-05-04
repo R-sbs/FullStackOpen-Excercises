@@ -5,7 +5,7 @@ import "./app.css";
 const App = () => {
   const [persons, setPersons] = useState();
   const [newName, setNewName] = useState("");
-  const [newPhone, setNewPhone] = useState("");
+  const [newnumber, setNewnumber] = useState("");
   const [search, setSearch] = useState("");
   const [filteredPersons, setFilteredPersons] = useState(persons);
   const [error, setError] = useState(null);
@@ -25,7 +25,7 @@ const App = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const newPerson = { name: newName, phone: newPhone };
+    const newPerson = { name: newName, number: newnumber };
     const existingPerson = persons.find(
       (each) => each.name.toLowerCase() === newName.toLowerCase()
     );
@@ -36,7 +36,7 @@ const App = () => {
       );
 
       if (confirmed) {
-        const changedPerson = { ...existingPerson, phone: newPhone };
+        const changedPerson = { ...existingPerson, number: newnumber };
 
         try {
           const returnedPerson = await update(existingPerson.id, changedPerson);
@@ -49,10 +49,12 @@ const App = () => {
             );
             setSuccess(`${existingPerson.name} is updated successfully.`);
             setNewName("");
-            setNewPhone("");
+            setNewnumber("");
             setTimeout(() => setSuccess(null), 4000);
           } else {
-            setError(`Information on ${existingPerson.name} is already removed on server.`);
+            setError(
+              `Information on ${existingPerson.name} is already removed on server.`
+            );
             setTimeout((err) => setError(null), 4000);
             return;
           }
@@ -69,11 +71,11 @@ const App = () => {
     }
 
     try {
-      const createdPerson = await create(newPerson);
-      setPersons(persons.concat(createdPerson));
+      await create(newPerson);
+      setPersons(persons.concat(newPerson));
       setSuccess("Successfully person is added.");
       setNewName("");
-      setNewPhone("");
+      setNewnumber("");
 
       setTimeout(() => setSuccess(null), 4000);
     } catch (err) {
@@ -121,9 +123,7 @@ const App = () => {
         {error && <p className="baderror">{error}</p>}
         {success && <p className="gooderror">{success}</p>}
       </div>
-      <p>
-        Filter Shown with: <input value={search} onChange={handleSearch} />
-      </p>
+
       <form onSubmit={handleSubmit}>
         <p>
           name:{" "}
@@ -132,26 +132,33 @@ const App = () => {
         <p>
           Phone:{" "}
           <input
-            value={newPhone}
-            onChange={(e) => setNewPhone(e.target.value)}
+            value={newnumber}
+            onChange={(e) => setNewnumber(e.target.value)}
           />
         </p>
         <div>
-          <button type="submit" disabled={newName === "" || newPhone === ""}>
+          <button type="submit" disabled={newName === "" || newnumber === ""}>
             add
           </button>
         </div>
       </form>
-      <h2>Numbers</h2>
-      {persons &&
-        filterspersonsArr.map((person) => {
-          return (
-            <p key={person.name}>
-              {person.name} : {person.phone}{" "}
-              <button onClick={() => handleDelete(person.id)}>Delete</button>
-            </p>
-          );
-        })}
+      <div>
+        <h2>Numbers</h2>
+        <p>
+          Filter By Names: <input value={search} onChange={handleSearch} />
+        </p>
+      </div>
+      <div>
+        {persons &&
+          filterspersonsArr.map((person) => {
+            return (
+              <p key={person.name}>
+                {person.name} : {person.number}{" "}
+                <button onClick={() => handleDelete(person.id)}>Delete</button>
+              </p>
+            );
+          })}
+      </div>
     </div>
   );
 };
