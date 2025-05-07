@@ -86,17 +86,17 @@ const App = () => {
   };
 
   const handleDelete = (id) => {
-    const selectedPerson = persons.find((person) => person.id === id);
+    const selectedPerson = persons.find((person) => person._id === id);
 
     const confirmed = window.confirm(
       `Are you sure you want to delete : ${selectedPerson.name} ?`
     );
     if (confirmed) {
       const res = deletePerson(id);
-      console.log(res);
+      
       if (res) {
-        setPersons(persons.filter((person) => person.id !== id));
-        setError(`${selectedPerson.name} is Deleted Successfully`);
+        setPersons(persons.filter((person) => person._id !== id));
+        setSuccess(`${selectedPerson.name} is Deleted Successfully`);
         setTimeout(() => setError(null), 4000);
       } else {
         setError("Retry deleting again");
@@ -154,7 +154,7 @@ const App = () => {
             return (
               <p key={person.name}>
                 {person.name} : {person.number}{" "}
-                <button onClick={() => handleDelete(person.id)}>Delete</button>
+                <button onClick={() => handleDelete(person._id)}>Delete</button>
               </p>
             );
           })}
