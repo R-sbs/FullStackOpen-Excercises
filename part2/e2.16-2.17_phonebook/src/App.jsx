@@ -39,12 +39,12 @@ const App = () => {
         const changedPerson = { ...existingPerson, number: newnumber };
 
         try {
-          const returnedPerson = await update(existingPerson.id, changedPerson);
+          const returnedPerson = await update(existingPerson._id, changedPerson);
           console.log(returnedPerson);
           if (returnedPerson !== 404) {
             setPersons(
               persons.map((p) =>
-                p.id === existingPerson.id ? returnedPerson : p
+                p._id === existingPerson._id ? returnedPerson : p
               )
             );
             setSuccess(`${existingPerson.name} is updated successfully.`);
