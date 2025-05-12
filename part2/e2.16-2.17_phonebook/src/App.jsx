@@ -39,29 +39,29 @@ const App = () => {
         const changedPerson = { ...existingPerson, number: newnumber };
 
         try {
-          const returnedPerson = await update(existingPerson._id, changedPerson);
-          console.log(returnedPerson);
-          if (returnedPerson !== 404) {
+          const response = await update(existingPerson._id, changedPerson);
+
+          if (response.status === 200) {
+            const returnedPerson = response.data;
             setPersons(
               persons.map((p) =>
-                p._id === existingPerson._id ? returnedPerson : p
+                p._id === returnedPerson._id ? returnedPerson : p
               )
             );
             setSuccess(`${existingPerson.name} is updated successfully.`);
             setNewName("");
             setNewnumber("");
             setTimeout(() => setSuccess(null), 4000);
-          } else {
-            setError(
-              `Information on ${existingPerson.name} is already removed on server.`
-            );
-            setTimeout((err) => setError(null), 4000);
-            return;
+          } else if (response.status !== 200) {
+            const errorMessage = response.data.error;
+            setError(errorMessage);
+            setTimeout(() => setError(null), 4000);
           }
         } catch (err) {
-          console.log(err);
-          setError("Update failed. Please try again.");
-          setTimeout((err) => setError(null), 4000);
+          const errorMessage =
+            err.response?.data?.error || "Update failed. Please try again.";
+          setError(errorMessage);
+          setTimeout(() => setError(null), 4000);
         }
 
         return;
@@ -71,17 +71,17 @@ const App = () => {
     }
 
     try {
-      await create(newPerson);
-      setPersons(persons.concat(newPerson));
-      setSuccess("Successfully person is added.");
+      const addedPerson = await create(newPerson);
+      setPersons(persons.concat(addedPerson));
+      setSuccess("Successfully added person.");
       setNewName("");
       setNewnumber("");
-
       setTimeout(() => setSuccess(null), 4000);
     } catch (err) {
-      setError("Failed to add contact. Please try again.");
+      const errorMessage =
+        err.response?.data?.error || "Failed to add contact. Please try again.";
+      setError(errorMessage);
       setTimeout(() => setError(null), 4000);
-      console.error(err);
     }
   };
 
@@ -93,7 +93,7 @@ const App = () => {
     );
     if (confirmed) {
       const res = deletePerson(id);
-      
+
       if (res) {
         setPersons(persons.filter((person) => person._id !== id));
         setSuccess(`${selectedPerson.name} is Deleted Successfully`);

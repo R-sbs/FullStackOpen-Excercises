@@ -19,14 +19,11 @@ const create = async (newPerson) => {
 
 const update = async (id, person) => {
     try {
-        const response = await axios.put(`${baseUrl}/${id}`, person)
-        return response.data;
+        const response = await axios.put(`${baseUrl}/${id}`, person);
+        return response;
         
     } catch (error) {
-        if(error.status === 404) {
-            return error.status;
-        }
-        return error;        
+        return error.response;        
     }
 
 }
