@@ -1,0 +1,17 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "NodeJS Server for Blog Application",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "test": "node --test"
+  },
+  "author": "RanjanM",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
