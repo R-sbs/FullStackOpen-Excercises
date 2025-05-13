@@ -1,8 +1,10 @@
 import logger from "./logger.js";
 
 const errorHandler = (error, request, response, next) => {
-    if(error.name === 'validationError') {
-        response.status(400).send(error.name)
+    if(error.name === 'ValidationError') {
+        response.status(400).send(error.message)
+    } else if (error.name === 'CastError') {
+      response.status(400).send('Malformatted ID')
     } else {
         response.status(400).send('Oops, Something Not Right')
     }

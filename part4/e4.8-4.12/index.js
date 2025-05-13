@@ -23,3 +23,5 @@ app.listen(config.PORT, async () => {
   await connectDB();
   logger.info(`Server is Running on ${config.PORT}`);
 });
+
+export default app;
