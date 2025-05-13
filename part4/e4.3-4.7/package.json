@@ -1,0 +1,22 @@
+{
+  "name": "testing_excercise",
+  "version": "1.0.0",
+  "description": "NodeJS Server for Blog Application",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "test": "node --test"
+  },
+  "author": "RanjanM",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "mongoose": "^8.14.2"
+  },
+  "devDependencies": {
+    "lodash": "^4.17.21"
+  }
+}
