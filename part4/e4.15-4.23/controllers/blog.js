@@ -97,7 +97,7 @@ blogsRouter.delete("/:id", async (req, res, next) => {
     const response = await Blog.findById(id);
     console.log(response);
     if (response && response.user.toString() === user._id.toString()) {
-      await Blog.deleteOne({id});
+      await Blog.deleteOne({_id: id});
       res.status(204).send("Deleted Successfully");
     } else {
       res.status(401).send("UNAUTHORIZED");
