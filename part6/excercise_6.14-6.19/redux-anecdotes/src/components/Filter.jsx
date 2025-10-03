@@ -19,14 +19,7 @@ const Filter = () => {
 
   return (
     <div style={style}>
-      <h3 style={{ fontWeight: "bold" }} className="filterText">
-        Filters
-      </h3>{" "}
-      <input
-        onChange={handleChange}
-        value={filterText}
-        placeholder="Search..."
-      />
+      filter <input onChange={handleChange} value={filterText} />
       <input type="reset" onClick={handleReset} />
     </div>
   );
