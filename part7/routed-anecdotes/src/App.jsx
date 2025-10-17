@@ -1,0 +1,85 @@
+import { useState } from "react";
+import { Routes, Route, Link } from "react-router-dom";
+import { Menu } from "./components/Menu";
+import { AnecdoteList } from "./components/AnecdoteList";
+import { About } from "./components/About";
+import { CreateNew } from "./components/CreateNew";
+import { Footer } from "./components/Footer";
+import Anecdote from "./components/Anecdote";
+
+const App = () => {
+  const [anecdotes, setAnecdotes] = useState([
+    {
+      content: "If it hurts, do it more often",
+      author: "Jez Humble",
+      info: "https://martinfowler.com/bliki/FrequencyReducesDifficulty.html",
+      votes: 6,
+      id: 1,
+    },
+    {
+      content: "Premature optimization is the root of all evil",
+      author: "Donald Knuth",
+      info: "http://wiki.c2.com/?PrematureOptimization",
+      votes: 0,
+      id: 2,
+    },
+    {
+      content: "Premature optimization is the root of all evil - Munger",
+      author: "Donald Knuth new",
+      info: "http://wiki.c2.com/?PrematureOptimization",
+      votes: 2,
+      id: 3,
+    },
+  ]);
+
+  const [notification, setNotification] = useState("");
+
+  const addNew = (anecdote) => {
+    anecdote.id = Math.round(Math.random() * 10000);
+    setAnecdotes(anecdotes.concat(anecdote));
+    setNotification(`${anecdote.content} Has Been Successfully Added`);
+    setTimeout(() => {
+      setNotification("");
+    }, 5000);
+  };
+
+  const anecdoteById = (id) => anecdotes.find((a) => a.id === id);
+
+  const vote = (id) => {
+    const anecdote = anecdoteById(id);
+
+    const voted = {
+      ...anecdote,
+      votes: anecdote.votes + 1,
+    };
+
+    setAnecdotes(anecdotes.map((a) => (a.id === id ? voted : a)));
+  };
+
+  return (
+    <div className="flex flex-col space-y-8 h-full max-w-5xl mx-auto ">
+      <header className="py-4 flex items-center justify-between">
+        <h1 className="text-xl font-bold">Software anecdotes</h1>
+        <Menu />
+      </header>
+      <div className="py-4">{notification && notification}</div>
+      <main className="flex-1">
+        <Routes>
+          <Route
+            path="/anecdotes"
+            element={<AnecdoteList anecdotes={anecdotes} />}
+          />
+          <Route
+            path="/anecdotes/:id"
+            element={<Anecdote anecdotes={anecdotes} />}
+          />
+          <Route path="/create-new" element={<CreateNew addNew={addNew} />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
+      </main>
+      <Footer />
+    </div>
+  );
+};
+
+export default App;
