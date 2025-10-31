@@ -1,0 +1,28 @@
+{
+  "name": "blog_app",
+  "version": "1.0.0",
+  "description": "NodeJS Server for Blog Application",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production index.js",
+    "dev": "cross-env NODE_ENV=development node --watch index.js",
+    "test": "cross-env NODE_ENV=test node --test",
+    "test_api": "cross-env NODE_ENV=test node test -- tests/blog_api.test.js"
+  },
+  "author": "RanjanM",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.14.2"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "lodash": "^4.17.21",
+    "supertest": "^7.1.1"
+  }
+}
