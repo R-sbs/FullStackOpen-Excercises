@@ -1,10 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import blogservice from "../services/blog";
 import { notify } from "./Notification";
 import { useNotification } from "../contexts/notification";
+import { Link } from "react-router-dom";
+import Toggalable from "./Toggalable";
+import AddBlogForm from "./AddBlogForm";
 
 const BlogsDisplay = ({ blogs, setBlogs }) => {
   const { dispatch } = useNotification();
+  const blogFormRef = useRef();
+
+  const AddNewBlog = (newBlog) => {
+    setBlogs((prev) => [...prev, newBlog]);
+    notify(dispatch, "New Blog Has been Successfully added", "success");
+    blogFormRef.current.toggleVisibility();
+  };
 
   const handleDelete = async (e, id) => {
     e.preventDefault();
@@ -56,31 +66,39 @@ const BlogsDisplay = ({ blogs, setBlogs }) => {
   }
   return (
     <div className="my-8">
-      <div className="flex gap-4 justify-center items-center my-1">
-        <h5 className="bg-black/60 rounded-sm text-white p-1 px-2">Sort By</h5>
-        <button
-          className="bg-white! text-gray-800! p-0.5! px-1! active:invert hover:underline"
-          onClick={handleAZSort}
-        >
-          A-Z &darr;
-        </button>
-        <button
-          className="bg-white! text-gray-800! p-0.5! px-1!  active:invert hover:underline"
-          onClick={handleLikesSort}
-        >
-          Most likes &darr;
-        </button>
-        <button
-          className="bg-white! text-gray-800! p-0.5! px-1!  active:invert hover:underline"
-          onClick={handleReset}
-        >
-          Reset
-        </button>
+      <div className="w-full flex justify-between my-4">
+        <h2 className="text-2xl font-semibold font-mono">Saved Blogs</h2>
+        <div className="flex gap-4 justify-center items-center my-1">
+          <h5 className="bg-black/60 rounded-sm text-white p-1 px-2">
+            Sort By
+          </h5>
+          <button
+            className="bg-white! text-gray-800! p-0.5! px-1! active:invert hover:underline"
+            onClick={handleAZSort}
+          >
+            A-Z &darr;
+          </button>
+          <button
+            className="bg-white! text-gray-800! p-0.5! px-1!  active:invert hover:underline"
+            onClick={handleLikesSort}
+          >
+            Most likes &darr;
+          </button>
+          <button
+            className="bg-white! text-gray-800! p-0.5! px-1!  active:invert hover:underline"
+            onClick={handleReset}
+          >
+            Reset
+          </button>
+        </div>
+        <Toggalable buttonLabel="Add New Blog" ref={blogFormRef}>
+          <AddBlogForm updateBlogs={AddNewBlog} />
+        </Toggalable>
       </div>
       <table className="table-auto w-full border">
-        <thead>
+        <thead className="bg-blue-200 ">
           <tr className="font-medium">
-            <th>Title</th>
+            <th className="p-4">Title</th>
             <th>Authored By</th>
             <th>URL</th>
             <th>Likes</th>
@@ -90,13 +108,14 @@ const BlogsDisplay = ({ blogs, setBlogs }) => {
         <tbody>
           {blogs.length > 0 &&
             blogs.map((blog) => {
+              console.log(blog.url);
               return (
                 <tr key={blog.id} className="border p-2">
                   <td>
                     {" "}
-                    <a href={blog.url} target="_blank" className="flex-1">
+                    <Link to={`/blogs/${blog.id}`} className="flex-1">
                       <h3>{blog.title}</h3>
-                    </a>
+                    </Link>
                   </td>
                   <td>
                     {" "}
@@ -104,7 +123,7 @@ const BlogsDisplay = ({ blogs, setBlogs }) => {
                   </td>
                   <td>
                     <a href={blog.url} target="_blank" className="underline!">
-                      {blog.url}
+                      GO
                     </a>
                   </td>
                   <td>

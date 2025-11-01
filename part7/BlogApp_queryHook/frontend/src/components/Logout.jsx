@@ -1,5 +1,9 @@
 import React from "react";
-import { ArrowDownLeftFromSquareIcon } from "lucide-react";
+import {
+  ArrowDownLeftFromSquareIcon,
+  ArrowUpLeftFromSquareIcon,
+  ArrowUpRightFromSquareIcon,
+} from "lucide-react";
 import { notify } from "./Notification";
 import { useNotification } from "../contexts/notification";
 import { useUser } from "../hooks/useUser";
@@ -21,11 +25,11 @@ const Logout = () => {
   };
   return (
     <button
-      className="flex  items-center gap-2 bg-red-500 px-4 py-2 rounded-md text-white"
+      className="flex  items-center gap-2 text-red-500 px-4 py-2 rounded-md"
       onClick={handleLogout}
     >
       Logout
-      <ArrowDownLeftFromSquareIcon size={14} />
+      <ArrowUpRightFromSquareIcon size={14} />
     </button>
   );
 };

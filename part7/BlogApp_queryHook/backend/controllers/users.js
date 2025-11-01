@@ -6,7 +6,7 @@ const usersRouter = express.Router();
 
 usersRouter.get("/", async (req, res, next) => {
   try {
-    const users = await User.find({}).populate('blog');
+    const users = await User.find({}).populate("blogs");
     res.status(200).json(users);
   } catch (error) {
     next(error);
@@ -16,7 +16,7 @@ usersRouter.get("/", async (req, res, next) => {
 usersRouter.get("/:id", async (req, res, next) => {
   const { id } = req.params;
   try {
-    const user = await User.findById(id).populate('blogs');
+    const user = await User.findById(id).populate("blogs");
     res.status(200).json(user);
   } catch (error) {
     next(error);
@@ -27,12 +27,14 @@ usersRouter.post("/", async (req, res, next) => {
   const rawPassword = req.body.password;
   const username = req.body.username;
   if (rawPassword.length < 6) {
-    return res.status(400).json({ error: "Password Must be more than 6 characters"});
+    return res
+      .status(400)
+      .json({ error: "Password Must be more than 6 characters" });
   }
   if (username.length < 3) {
     return res
       .status(400)
-      .json({ error: "Username Must be must be 3 or more characters"});
+      .json({ error: "Username Must be must be 3 or more characters" });
   }
   try {
     const salt = await bcrypt.genSalt(10);

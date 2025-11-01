@@ -15,7 +15,7 @@ const Toggalable = React.forwardRef((props, refs) => {
   });
 
   return (
-    <div className="relative w-full flex items-start gap-4">
+    <div className="relative flex items-start gap-4">
       <div style={hideWhenVisible}>
         <button
           className="bg-blue-500 rounded-md px-4 py-2 text-white"

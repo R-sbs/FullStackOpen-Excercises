@@ -1,14 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import blogService from "../services/blog";
+import { Link } from "react-router-dom";
+import { getAllUsers } from "../services/users";
 
 const UsersPage = () => {
   const {
-    data: blogs,
+    data: allUsers,
     isLoading,
     isError,
   } = useQuery({
     queryKey: ["users"],
-    queryFn: blogService.getAll,
+    queryFn: getAllUsers,
   });
 
   if (isLoading) {
@@ -19,18 +21,31 @@ const UsersPage = () => {
     return <p>Oops...Error Occured</p>;
   }
 
-  const allUsers = blogs.map((each) => each.user);
-  console.log(allUsers);
-
   return (
     <div>
-      <h2 className="text-lg font-medium">List of Users</h2>
-      <ul>
-        {allUsers &&
-          allUsers.map((user) => {
-            return <li key={user.id}>{user.name}</li>;
-          })}
-      </ul>
+      <h2 className="text-xl font-semibold font-mono my-4">List of Users</h2>
+
+      <table className="table border mx-auto">
+        <thead>
+          <tr className="bg-blue-200">
+            <th className="border p-4 min-w-md">Author</th>
+            <th className="border p-4 min-w-md">Blogs Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          {allUsers &&
+            allUsers.map((user) => {
+              return (
+                <tr key={user.id} className="border">
+                  <td className="border p-2">
+                    <Link to={`/users/${user.id}`}>{user.name}</Link>
+                  </td>
+                  <td>{user.blogs.length > 0 ? user.blogs.length : 0}</td>
+                </tr>
+              );
+            })}
+        </tbody>
+      </table>
     </div>
   );
 };

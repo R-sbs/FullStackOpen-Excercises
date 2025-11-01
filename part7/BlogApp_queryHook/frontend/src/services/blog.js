@@ -60,4 +60,40 @@ const deleteBlog = async (id) => {
   }
 };
 
-export default { getAll, addBlog, deleteBlog, updateLikes };
+export const getBlogById = async (id) => {
+  const { token } = JSON.parse(localStorage.getItem("user"));
+
+  try {
+    const res = await axios.get(`${baseUrl}/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const addComment = async (id, comment) => {
+  try {
+    const { token } = JSON.parse(localStorage.getItem("user"));
+
+    const response = await axios.post(
+      `${baseUrl}/${id}/comments`,
+      { comment },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export default { getAll, addBlog, deleteBlog, updateLikes, addComment };

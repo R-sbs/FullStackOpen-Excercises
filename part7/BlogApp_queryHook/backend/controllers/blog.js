@@ -107,4 +107,20 @@ blogsRouter.delete("/:id", async (req, res, next) => {
   }
 });
 
+blogsRouter.post("/:id/comments", async (req, res, next) => {
+  try {
+    const { comment } = req.body;
+    const blog = await Blog.findById(req.params.id);
+    if (!blog) {
+      return res.status(404).json({ error: "Blog Not Found" });
+    }
+
+    blog.comments = blog.comments.concat(comment);
+    const updatedBlog = await blog.save();
+    return res.status(201).json(updatedBlog);
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default blogsRouter;
